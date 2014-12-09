@@ -12,7 +12,7 @@ $powerOn       = $true;
 $clusterName   = 'compute2';
 $datastoreName = 'nfs-ds412-hybrid0';
 
-$connect-viserver $vCenter
+connect-viserver $vCenter
 
 $ovfInfo = @{
   VMware_Identity_Appliance = @{
@@ -30,25 +30,25 @@ $ovfInfo = @{
 
 $ovfInfo.keys | % {
   $ovfConfig = @{
-    'common.vami.hostname'                    = $ovfInfo[$_].hostname;
-    'common.varoot_password'                  = $password;
-    'common.va_ssh_enabled'                   = $sshEnabled;
-    'IpAssignment.IpProtocol'                 = $ipProtocol;
-    'NetworkMapping.Network_1'                = $portgroup
-    'vami.VMware_Identity_Appliance.ip0'      = $ovfInfo[$_].ipAddress;
-    'vami.VMware_Identity_Appliance.netmask0' = $netmask;
-    'vami.VMware_Identity_Appliance.gateway'  = $gateway;
-    'vami.VMware_Identity_Appliance.DNS'      = $dns;    
+    "vami.hostname"                    = $ovfInfo[$_].hostname;
+    "varoot-password"            = $password;
+    "va-ssh-enabled"                      = $sshEnabled;
+    "IpAssignment.IpProtocol"                 = $ipProtocol;
+    "NetworkMapping.Network 1"                = $portgroup
+    "vami.ip0.$_"      = $ovfInfo[$_].ipAddress;
+    "vami.netmask0.$_" = $netmask;
+    "vami.gateway.$_"  = $gateway;
+    "vami.DNS.$_"      = $dns;    
   };
 
   $cluster      = get-cluster $clusterName
   $datastore    = $cluster | get-datastore $datastoreName
   $clusterHosts = $cluster | get-vmhost
   $vmHost       = $clusterHosts[$(get-random -minimum 0 -maximum $clusterHosts.length)]
-  $vmName       = $ovfInfo[$_].hostname
+  $vmName       = ($ovfInfo[$_].hostname).split('.')[0]
   $ovfPath      = $ovfInfo[$_].path
   
-  $deployedVM = Import-VApp -name $vmName $ovfPath -OvfConfiguration $ovfConfig -VMHost $vmHost -datastore $datastore -DiskStorageFormat EagerZeroedThick
+  $deployedVM = Import-VApp -name $vmName $ovfPath -OvfConfiguration $ovfConfig -VMHost $vmHost -datastore $datastore -DiskStorageFormat thin
   
   if ($deployedVM -and $powerOn) { $deployedVM | start-vm }
 }
