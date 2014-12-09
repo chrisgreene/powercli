@@ -15,14 +15,14 @@ $datastoreName = 'nfs-ds412-hybrid0';
 connect-viserver $vCenter
 
 $ovfInfo = @{
-  VMware_Identity_Appliance = @{
-    path       = 'z:\vcac\VMware-Identity-Appliance-2.1.0.0-2007605_OVF10.ova';
-    hostname   =  'vcac61a-sso.vmware.local';
-    ipAddress  = '192.168.3.88';
-  };
+  #VMware_Identity_Appliance = @{
+  #  path       = 'z:\vcac\VMware-Identity-Appliance-2.1.0.0-2007605_OVF10.ova';
+  #  hostname   = 'vcac61a-sso.vmware.local';
+  #  ipAddress  = '192.168.3.88';
+  #};
   VMware_vCAC_Appliance = @{
-    path       = 'z:\vcac\VMware-Identity-Appliance-2.1.0.0-2007605_OVF10.ova';
-    hostname   =  'vcac61a.vmware.local';
+    path       = 'z:\vcac\VMware-vCAC-Appliance-6.1.0.0-2077124_OVF10.ova';
+    hostname   = 'vcac61a.vmware.local';
     ipAddress  = '192.168.3.89';
   };
 }
@@ -30,15 +30,15 @@ $ovfInfo = @{
 
 $ovfInfo.keys | % {
   $ovfConfig = @{
-    "vami.hostname"                    = $ovfInfo[$_].hostname;
-    "varoot-password"            = $password;
-    "va-ssh-enabled"                      = $sshEnabled;
-    "IpAssignment.IpProtocol"                 = $ipProtocol;
-    "NetworkMapping.Network 1"                = $portgroup
-    "vami.ip0.$_"      = $ovfInfo[$_].ipAddress;
-    "vami.netmask0.$_" = $netmask;
-    "vami.gateway.$_"  = $gateway;
-    "vami.DNS.$_"      = $dns;    
+    "vami.hostname"            = $ovfInfo[$_].hostname;
+    "varoot-password"          = $password;
+    "va-ssh-enabled"           = $sshEnabled;
+    "IpAssignment.IpProtocol"  = $ipProtocol;
+    "NetworkMapping.Network 1" = $portgroup
+    "vami.ip0.$_"              = $ovfInfo[$_].ipAddress;
+    "vami.netmask0.$_"         = $netmask;
+    "vami.gateway.$_"          = $gateway;
+    "vami.DNS.$_"              = $dns;    
   };
 
   $cluster      = get-cluster $clusterName
