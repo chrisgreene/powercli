@@ -15,11 +15,11 @@ $datastoreName = 'nfs-ds412-hybrid0';
 connect-viserver $vCenter
 
 $ovfInfo = @{
-  #VMware_Identity_Appliance = @{
-  #  path       = 'z:\vcac\VMware-Identity-Appliance-2.1.0.0-2007605_OVF10.ova';
-  #  hostname   = 'vcac61a-sso.vmware.local';
-  #  ipAddress  = '192.168.3.88';
-  #};
+  VMware_Identity_Appliance = @{
+    path       = 'z:\vcac\VMware-Identity-Appliance-2.1.0.0-2007605_OVF10.ova';
+    hostname   = 'vcac61a-sso.vmware.local';
+    ipAddress  = '192.168.3.88';
+  };
   VMware_vCAC_Appliance = @{
     path       = 'z:\vcac\VMware-vCAC-Appliance-6.1.0.0-2077124_OVF10.ova';
     hostname   = 'vcac61a.vmware.local';
