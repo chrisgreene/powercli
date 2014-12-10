@@ -16,7 +16,7 @@ connect-viserver $vCenter
  
 $ovfInfo = @{
   VMware_Identity_Appliance = @{
-    path       = 'z:\vra\VMware-Identity-Appliance-2.1.0.0-2007605_OVF10.ova';
+    path       = 'z:\vra\VMware-Identity-Appliance-2.2.0.0-2300183_OVF10.ova';
     hostname   = 'vra62-sso.vmware.local';
     ipAddress  = '192.168.3.88';
   };
