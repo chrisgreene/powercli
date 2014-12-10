@@ -21,7 +21,7 @@ $ovfInfo = @{
     ipAddress  = '192.168.3.88';
   };
   VMware_vRealize_Appliance = @{
-    path       = 'z:\vra\VMware-vCAC-Appliance-6.1.0.0-2077124_OVF10.ova';
+    path       = 'VMware-vCAC-Appliance-6.2.0.0-2330392_OVF10.ova';
     hostname   = 'vra62.vmware.local';
     ipAddress  = '192.168.3.89';
   };
