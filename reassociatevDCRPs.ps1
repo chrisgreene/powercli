@@ -1,8 +1,16 @@
 
 function reassociatevCDRPs {
-  # Doesn't work for shadow VMs.  Just select them in the vSphere client and drag them into the appropriate system resource pool.  
-  # Doesn't work with vShield Edges.  Edge gateways go into the system resource pool.  Certain vSEs such as ones for fenced vApps go into the org vDC resource pool. 
-  
+  <#
+  .SYNOPSIS
+    Places vCloud Director virtual machines into the correct vCenter resource pools.  
+  .DESCRIPTION
+    Places vCloud Director virtual machines into the correct vCenter resource pools.  This can be helpful when the VMs are moved from their resource pool during a task such as manual vMotion. 
+  .EXAMPLE
+  reassociatevCDRPs -org all -promptOnEachMove $false
+  .EXAMPLE
+  reassociatevCDRPs -org admin -promptOnEachMove $true
+  #>
+
   param(
     [Parameter(Mandatory=$true)] 
     [string] $org = "all",
