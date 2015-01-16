@@ -6,16 +6,16 @@ function reassociatevCDRPs {
   .DESCRIPTION
     Places vCloud Director virtual machines into the correct vCenter resource pools.  This can be helpful when the VMs are moved from their resource pool during a task such as manual vMotion. 
   .EXAMPLE
-  reassociatevCDRPs -org all -promptOnEachMove $false
+  reassociatevCDRPs -org all -promptOnMove $false
   .EXAMPLE
-  reassociatevCDRPs -org admin -promptOnEachMove $true
+  reassociatevCDRPs -org admin -promptOnMove $true
   #>
 
   param(
     [Parameter(Mandatory=$true)] 
     [string] $org = "all",
     [Parameter(Mandatory=$true)] 
-    [string] $promptOnEachMove = $false
+    [string] $promptOnMove = $false
   )
 
 	$ovdcLookupTable = @{}
@@ -61,15 +61,20 @@ function reassociatevCDRPs {
 
 	}
 
-	$vmsToMove.keys | % { 
-	  if ($promptOnEachMove -eq $true) {
-	    $response = read-host "Move $($_.name) to the correct resource pool ($($vmsToMove[$_])) (y|n)?"
-	    if ($response -eq 'n') { return }  # If the user selects not to move the VM, try the next VM in the list.
+    $vmsToMove.keys | % { 
+	  if ($promptOnMove -eq $true) {
+	    $response = read-host "Move $($_.name) to the correct resource pool ($($vmsToMove[$_])) ( [y]es, [n]o, [a]ll )?"
+	    if ($response -eq 'n') { # If the user selects not to move the VM, try the next VM in the list.
+	      return 
+	    } 
+	    elseif ($response -eq 'a') {
+	      $promptOnMove = $false
+	    } 
 	  }
 	  $resourcePool = $vmsToMove[$_] 
 	  echo "Moving $vm into resource pool $resourcePool"
 	  move-vm $_ -Destination $resourcePool | out-null
-	  echo "result: $($?)"
+	  #echo "result: $($?)"
 	}
 
 }
