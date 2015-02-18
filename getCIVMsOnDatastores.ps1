@@ -7,7 +7,6 @@ function getCIVMsOnDatastores {
   .EXAMPLE
   getCIVMsOnDatastores @('HP-DEV-TEST-FC-Lun116')
   .EXAMPLE
-  getCIVMsOnDatastores
   getCIVMsOnDatastores @('HP-DEV-TEST-FC-Lun116','HP-DEV-TEST-FC-Lun117','HP-DEV-TEST-FC-Lun118')
   #>
 
