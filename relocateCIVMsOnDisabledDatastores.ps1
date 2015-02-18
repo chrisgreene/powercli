@@ -3,13 +3,8 @@ function relocateCIVMsOnDisabledDatastores {
   .SYNOPSIS
     Returns all vCD VMs on specified datastore(s)
   .DESCRIPTION
-    This function is for migrating vCloud Director (vCD) VMs for a specific use case.  The relocate method will be called on all VMs.  If the VM is on a disabled datastore, the VM will be relocated to an enabled datastore.  Since relocating the VM possibly fail, you can specify a datastore that the VM will be storage vMotioned to. 
-    - A new set of LUNs were prensted to vCD
-    - Need to migrate off old LUNs to the new LUNs
-    - No vCenter datastore clusters
-    - No vCenter storage policies
-    - vCD using the special *Any storage policy
-    - vCD / vCenter 5.5
+    This function is for migrating vCloud Director (vCD) VMs for a specific use case.  The relocate method will be called on all VMs.  If the VM is on a disabled datastore, the VM will be relocated to an enabled datastore.  Since relocating the VM possibly fail, you can alternatively specify a datastore that the VM will be storage vMotioned to. 
+    Tested with vCD 5.5 / vCenter 5.5
   .EXAMPLE
   relocateCIVMsOnDisabledDatastores -civms $civms -targetDatastore 'HP-DEV-TEST-FC-NEW_Lun116' -dismountTools $true
   #>
