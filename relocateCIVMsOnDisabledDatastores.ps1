@@ -33,7 +33,7 @@ function relocateCIVMsOnDisabledDatastores {
       write-host "Exception Message: $($_.Exception.Message)" -ForegroundColor Yellow
     }
    
-    # If updating the VM failed, just storage vMotion it to the destination datastore.
+    # If updating the VM failed, try storage vMotion it to the destination datastore.
     if ($moved -eq $false -and $targetDatastore -ne $false) {
       try {
 
