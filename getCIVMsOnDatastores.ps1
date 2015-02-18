@@ -15,23 +15,28 @@ function getCIVMsOnDatastores {
     [Array] $oldDatastores = $null
   )
 
+  $orgIds = @{}
+  search-cloud -querytype organization | % { $orgIds[$_.name] = $_.id }
+
   $orgNames = @{}
 	search-cloud -querytype organization | % { $orgNames[$_.id] = $_.name }
 	
-	$vms = search-cloud -querytype adminvm -property Container, ContainerName, Name, CatalogName, Org, DatastoreName -filter "IsVappTemplate==False" | ? { 
-
-	$oldDatastores -contains $_.DatastoreName } | `
+	$vms = @()
+	search-cloud -querytype adminvm -property Container, ContainerName, Name, CatalogName, Org, DatastoreName -filter "IsVappTemplate==False" | ? { 
+	  $oldDatastores -contains $_.DatastoreName } | `
 	     select @{N='Org';                 E={ $orgNames[$_.org] }}, `
 	            @{N='Catalog';             E={ $_.CatalogName} }, `
 	            @{N='vApp';                E={ $_.ContainerName} }, `
 	            @{N='VMName';              E={ $_.Name} }, `
 	            @{N='Datastore';           E={ $_.DatastoreName }}, `
 	            @{N='ShadowVMs';           E={ $shadowsVMs[$_.Container].count }}, `
-	            @{N='ShadowVMsDatastores'; E={ $shadowsVMs[$_.Container] -join ', '}}
+	            @{N='ShadowVMsDatastores'; E={ $shadowsVMs[$_.Container] -join ', '}} | % { $vms += $_ }
 
-	$civms = @()
+  if ($vms.length -eq 0) { echo "No VMs found on $($oldDatastores)" ; return }
 
-	$civms = $vms | % { 
+  $civms = @()
+
+  $civms = $vms | % { 
 	  get-civm -name $_.vmname -org $_.org -vapp $_.vApp 
 	  $percentComplete = ((++$i / $vms.length) * 100)
     Write-Progress -activity "Getting CI VMs" -status "Percent complete: $("{0:N0}" -f $percentComplete)%" -PercentComplete $percentComplete
