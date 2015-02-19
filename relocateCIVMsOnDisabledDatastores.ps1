@@ -19,6 +19,9 @@ function relocateCIVMsOnDisabledDatastores {
   )
 
   $civms | % {
+    $percentComplete = ((++$i / $civms.length) * 100)
+    Write-Progress -activity "Relocating VMs" -status "Percent complete: $("{0:N0}" -f $percentComplete)%" -PercentComplete $percentComplete
+  
     $moved = $false
 
     try { 
@@ -53,8 +56,5 @@ function relocateCIVMsOnDisabledDatastores {
         write-host "Exception Message: $($_.Exception.Message)" -ForegroundColor Yellow
       }
     }   
-
-    $percentComplete = ((++$i / $civms.length) * 100)
-    Write-Progress -activity "Relocating VMs" -status "Percent complete: $("{0:N0}" -f $percentComplete)%" -PercentComplete  
   }
 }
