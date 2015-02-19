@@ -6,7 +6,7 @@ function relocateCIVMsOnDisabledDatastores {
     This function is for migrating vCloud Director (vCD) VMs for a specific use case.  The relocate method will be called on all VMs.  If the VM is on a disabled datastore, the VM will be relocated to an enabled datastore.  Since relocating the VM possibly fail, you can alternatively specify a datastore that the VM will be storage vMotioned to. 
     Tested with vCD 5.5 / vCenter 5.5
   .EXAMPLE
-  relocateCIVMsOnDisabledDatastores -civms $civms -targetDatastore 'HP-DEV-TEST-FC-NEW_Lun116' -dismountTools $true
+  relocateCIVMsOnDisabledDatastores -civms $civms -targetDatastore 'HP-DEV-TEST-FC-NEW_Lun117' -dismountTools $true
   #>
 
   param(
@@ -19,7 +19,7 @@ function relocateCIVMsOnDisabledDatastores {
   )
 
   $civms | % {
-    $percentComplete = ((++$i / $civms.length) * 100)
+    $percentComplete = (($i++ / $civms.length) * 100)
     Write-Progress -activity "Relocating VMs" -status "Percent complete: $("{0:N0}" -f $percentComplete)%" -PercentComplete $percentComplete
   
     $moved = $false
