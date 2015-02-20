@@ -20,7 +20,7 @@ function relocateCIVMsOnDisabledDatastores {
 
   $civms | % {
     $percentComplete = (($i++ / $civms.length) * 100)
-    Write-Progress -activity "Relocating VMs" -status "Percent complete: $("{0:N0}" -f $percentComplete)%" -PercentComplete $percentComplete
+    Write-Progress -activity "Relocating VMs" -status "Percent complete: $("{0:N0}" -f $percentComplete)% $($i) / $($civms.length)" -PercentComplete $percentComplete
   
     $moved = $false
 
