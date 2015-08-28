@@ -41,7 +41,7 @@ function relocateCIVMsOnDisabledDatastores {
       try {
 
         $vCDVMView = $_ | get-ciview 
-        $vSphereView = Get-View -RelatedObject $vCDVMView
+        $vSphereView = Get-View -RelatedObject $vCDVMView
         $vcVM = Get-VIObjectByVIView $vsphereView
 
         if ($dismountTools -eq $true -and $vcVM.ExtensionData.Runtime.ToolsInstallerMounted -eq $true) {
