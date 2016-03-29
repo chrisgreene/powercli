@@ -1,6 +1,3 @@
-$civms = get-civm
-$linux_vms = $civms | ? { $_.GuestOSFullName -like "*linux*" }
-
 $vms = @()
 
 $linux_vms | % { 
@@ -18,11 +15,11 @@ $linux_vms | % {
   $vm | Add-Member -type NoteProperty -name Org           -value $_.Org
   $vm | Add-Member -type NoteProperty -name OwnerGID      -value $_.vApp.Owner.Name
   $vm | Add-Member -type NoteProperty -name OwnerFullname -value $_.vApp.Owner.Fullname
+  $vm | Add-Member -type NoteProperty -name CPUs          -value $_.CpuCount
+  $vm | Add-Member -type NoteProperty -name Memory        -value $_.MemoryGB
   $vm | Add-Member -type NoteProperty -name DiskCount     -value $diskCount
   $vm | Add-Member -type NoteProperty -name TotalDiskSize -value $totalDiskSize
   $vm | Add-Member -type NoteProperty -name DiskDetails   -value $diskDetails
 
   $vms += $vm
-} 
-
-$vms | export-csv vm-disk-report.csv
+}
