@@ -7,7 +7,7 @@ $linux_vms | % {
   $vCDVMView     = $_.ExtensionData
   $vSphereView   = Get-View -RelatedObject $vCDVMView
   $vcVM          = Get-VIObjectByVIView $vsphereView
-  $memory        = $_.MemoryGB + " GB"
+  $memory        = "$($linux_vms[0].MemoryGB) GB"
   $disks         = $vcVM | Get-HardDisk
   $totalDiskSize = "{0:N0}" -f [math]::Round(($disks | Measure-Object 'CapacityGB' -sum).sum, 2) + " GB"
   $diskCount     = $disks.count
