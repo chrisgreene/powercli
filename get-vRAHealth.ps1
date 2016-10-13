@@ -30,7 +30,12 @@ function get-vRAHealth() {
     Write-Host "Checking $($url)"
     $content = Invoke-WebRequest "$($url)/component-registry/services/status/current"
     $json = $content.Content | ConvertFrom-Json
-    $json.content | select serviceName, @{N='Available';E={ if (!$_.notAvailable) {'True'} else {'False'}}}, lastUpdated, statusEndPointUrl | ft -auto
+    $json.content | select serviceName, `
+	                       @{N='Registered';E={ $_.serviceStatus.serviceInitializationStatus }}, `
+						   @{N='Available';E={ if (!$_.notAvailable) {'True'} else {'False'}}}, `
+						   lastUpdated, `
+						   statusEndPointUrl `
+						   | ft -auto
     if ($loop -eq $false) { break }
     sleep $sleep_timer
   }
