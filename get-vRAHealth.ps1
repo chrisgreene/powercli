@@ -36,8 +36,6 @@ function get-vRAHealth() {
   if ($uri.LocalPath -ne '/component-registry/services/status/current') {
     $uri = [System.Uri] "$($uri.AbsoluteUri)component-registry/services/status/current"
   }
-  
-  #if ($url -match "(.*)/$") { $url = $matches[1] }
 
   while ($true) {
     clear
