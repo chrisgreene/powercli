@@ -23,14 +23,28 @@ function get-vRAHealth() {
     [Int32]$sleep_timer=5
   ) 
 
-  if ($url -match "(.*)/$") { $url = $matches[1] }
+  $uri = [System.Uri] $url
+
+  if ($uri.Host -eq $null -and $uri.OriginalString) {
+    $uri = [System.Uri] "https://$($uri.OriginalString)"
+  }
+
+  if ($uri.Scheme -eq 'http') { 
+    $uri = [System.Uri] "https://$($uri.Host)"
+  }
+
+  if ($uri.LocalPath -ne '/component-registry/services/status/current') {
+    $uri = [System.Uri] "$($uri.AbsoluteUri)component-registry/services/status/current"
+  }
+  
+  #if ($url -match "(.*)/$") { $url = $matches[1] }
 
   while ($true) {
     clear
-    Write-Host "Checking $($url)"
+    Write-Host "Checking $($uri.AbsoluteUri)"
 	
 	try {
-      $content = Invoke-WebRequest "$($url)/component-registry/services/status/current"
+      $content = Invoke-WebRequest $uri.AbsoluteUri
 	  if ($content.StatusCode -eq 200) {
 	    $json = $content.Content | ConvertFrom-Json
         $json.content | select serviceName, `
