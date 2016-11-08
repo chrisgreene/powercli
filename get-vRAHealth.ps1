@@ -20,7 +20,7 @@ function get-vRAHealth() {
     [string]$loop=$true,
 
     [Parameter(Mandatory=$false,Position=2)]
-    [Int32]$sleep_timer=5
+    [Int32]$refresh=5
   ) 
 
   $uri = [System.Uri] $url
@@ -59,6 +59,6 @@ function get-vRAHealth() {
     } catch {
        Write-Host "Unable to access vRA Component Registry. Error: $_.Exception.Message."
   }   
-  sleep $sleep_timer	
+  sleep $refresh
   }
 } 
