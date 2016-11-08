@@ -5,7 +5,7 @@ function get-vRAHealth() {
   .DESCRIPTION 
     Displays health status of vRA components
   .EXAMPLE
-    get-vRAHealth https://vra71.vmware.local
+    get-vRAHealth vra71.vmware.local
   .EXAMPLE
     get-vRAHealth https://vra71.vmware.local -loop $true
   .EXAMPLE
@@ -41,23 +41,24 @@ function get-vRAHealth() {
     clear
     Write-Host "Checking $($uri.AbsoluteUri)"
 	
-	try {
+    try {
       $content = Invoke-WebRequest $uri.AbsoluteUri
-	  if ($content.StatusCode -eq 200) {
-	    $json = $content.Content | ConvertFrom-Json
+	  
+      if ($content.StatusCode -eq 200) {
+        $json = $content.Content | ConvertFrom-Json
         $json.content | select serviceName, `
-	                         @{N='Registered';E={ $_.serviceStatus.serviceInitializationStatus }}, `
-		  				     @{N='Available';E={ if (!$_.notAvailable) {'True'} else {'False'}}}, `
-		 				     lastUpdated, `
-						     statusEndPointUrl `
-						     | ft -auto
+	                  @{N='Registered';E={ $_.serviceStatus.serviceInitializationStatus }}, `
+	           	  @{N='Available';E={ if (!$_.notAvailable) {'True'} else {'False'}}}, `
+	                       lastUpdated, `
+		               statusEndPointUrl `
+		      | ft -auto
         if ($loop -eq $false) { break }
-	  } else {
-	    Write-Host "Unable to access vRA Component Registry. Error: $content.StatusCode"
-	  }
-	} catch {
-	  Write-Host "Unable to access vRA Component Registry. Error: $_.Exception.Message."
-	}   
+      } else {
+          Write-Host "Unable to access vRA Component Registry. Error: $content.StatusCode"
+      }
+    } catch {
+       Write-Host "Unable to access vRA Component Registry. Error: $_.Exception.Message."
+  }   
   sleep $sleep_timer	
   }
-}
+} 
