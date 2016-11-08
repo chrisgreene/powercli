@@ -17,7 +17,7 @@ function get-vRAHealth() {
     [string]$url,
     
     [Parameter(Mandatory=$false,Position=1)]
-    [string]$loop=$false,
+    [string]$loop=$true,
 
     [Parameter(Mandatory=$false,Position=2)]
     [Int32]$sleep_timer=5
