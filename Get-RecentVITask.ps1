@@ -24,6 +24,8 @@ function Get-RecentVITask() {
 
   while ($true) {
     clear
+    Write-Host "vCenter Recent Task"
+    write-host "-------------------"
     get-task | select -last 10 | select Description, `
                                    @{N='Target';E={$_.ExtensionData.Info.EntityName}}, `
                                    @{N='Status';E={$_.State}}, `
@@ -36,7 +38,7 @@ function Get-RecentVITask() {
                                    ft -auto
 
      if ($loop -eq $true) { 
-       sleep $sleep_timer 
+       sleep $sleep_timer
      } else {
        break
      }
