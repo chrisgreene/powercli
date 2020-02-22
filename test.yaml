@@ -1,0 +1,16 @@
+platform: linux
+  
+image_resource:
+  type: docker-image
+  source: {repository: vmware/powerclicore}
+ 
+params:
+  SLOT_ID:
+ 
+inputs:
+- name: powercli
+
+run:
+  path: pwsh
+  args:
+  - ./powercli/get-info.ps1
